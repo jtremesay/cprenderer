@@ -17,7 +17,7 @@ def Xform "root" (
     def Xform "Empty"
     {
         custom string userProperties:blender:object_name = "Empty"
-        float3 xformOp:rotateXYZ = (0, -0, 127.74316)
+        float3 xformOp:rotateXYZ = (0, -0, 81.01333)
         float3 xformOp:scale = (1, 1, 1)
         double3 xformOp:translate = (0, 0, 0.7699999809265137)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
@@ -26,8 +26,8 @@ def Xform "root" (
         {
             custom string userProperties:blender:object_name = "Camera"
             float3 xformOp:rotateXYZ = (80.74533, -8.128707e-7, -141.16772)
-            float3 xformOp:scale = (1, 1, 1)
-            double3 xformOp:translate = (-4.864497184753418, 6.043239593505859, 1.2640933990478516)
+            float3 xformOp:scale = (1.0000001, 1, 1)
+            double3 xformOp:translate = (-4.864498138427734, 6.043239116668701, 1.2640933990478516)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
             def Camera "Camera"
@@ -126,10 +126,10 @@ def Xform "root" (
                 color3f inputs:diffuseColor.connect = </root/_materials/walls/Image_Texture.outputs:rgb>
                 color3f inputs:emissiveColor.connect = </root/_materials/walls/Image_Texture_001.outputs:rgb>
                 float inputs:ior = 1.5
-                float inputs:metallic.connect = </root/_materials/walls/Image_Texture_002.outputs:r>
+                float inputs:metallic.connect = </root/_materials/walls/Image_Texture_005.outputs:a>
                 normal3f inputs:normal.connect = </root/_materials/walls/Image_Texture_004.outputs:rgb>
                 float inputs:opacity = 1
-                float inputs:roughness.connect = </root/_materials/walls/Image_Texture_003.outputs:r>
+                float inputs:roughness.connect = </root/_materials/walls/Image_Texture_002.outputs:a>
                 float inputs:specular = 0.5
                 token outputs:surface
             }
@@ -137,7 +137,7 @@ def Xform "root" (
             def Shader "Image_Texture"
             {
                 uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert1_baseColor.jpg@
+                asset inputs:file = @./textures/walls_baseColor.jpg@
                 token inputs:sourceColorSpace = "sRGB"
                 float2 inputs:st.connect = </root/_materials/walls/UV_Map.outputs:result>
                 token inputs:wrapS = "repeat"
@@ -152,35 +152,40 @@ def Xform "root" (
                 float2 outputs:result
             }
 
+            def Shader "Image_Texture_005"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @./textures/walls_metallicRoughness_metal.jpg@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </root/_materials/walls/uvmap.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                float outputs:a
+            }
+
+            def Shader "uvmap"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                string inputs:varname = "st"
+                float2 outputs:result
+            }
+
             def Shader "Image_Texture_002"
             {
                 uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert1_metallicRoughness_metal.jpg@
-                token inputs:sourceColorSpace = "raw"
-                float2 inputs:st.connect = </root/_materials/walls/UV_Map.outputs:result>
+                asset inputs:file = @./textures/walls_metallicRoughness_rough.jpg@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </root/_materials/walls/uvmap.outputs:result>
                 token inputs:wrapS = "repeat"
                 token inputs:wrapT = "repeat"
-                float outputs:r
-            }
-
-            def Shader "Image_Texture_003"
-            {
-                uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert1_metallicRoughness_rough.jpg@
-                token inputs:sourceColorSpace = "raw"
-                float2 inputs:st.connect = </root/_materials/walls/UV_Map.outputs:result>
-                token inputs:wrapS = "repeat"
-                token inputs:wrapT = "repeat"
-                float outputs:r
+                float outputs:a
             }
 
             def Shader "Image_Texture_004"
             {
                 uniform token info:id = "UsdUVTexture"
-                float4 inputs:bias = (-1, -1, -1, -1)
-                asset inputs:file = @./textures/lambert1_normal.jpg@
-                float4 inputs:scale = (2, 2, 2, 2)
-                token inputs:sourceColorSpace = "raw"
+                asset inputs:file = @./textures/walls_normal.jpg@
+                token inputs:sourceColorSpace = "sRGB"
                 float2 inputs:st.connect = </root/_materials/walls/UV_Map.outputs:result>
                 token inputs:wrapS = "repeat"
                 token inputs:wrapT = "repeat"
@@ -190,7 +195,7 @@ def Xform "root" (
             def Shader "Image_Texture_001"
             {
                 uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert1_emissive.jpg@
+                asset inputs:file = @./textures/walls_emissive.jpg@
                 token inputs:sourceColorSpace = "sRGB"
                 float2 inputs:st.connect = </root/_materials/walls/UV_Map.outputs:result>
                 token inputs:wrapS = "repeat"
@@ -212,10 +217,10 @@ def Xform "root" (
                 color3f inputs:diffuseColor.connect = </root/_materials/things/Image_Texture.outputs:rgb>
                 color3f inputs:emissiveColor.connect = </root/_materials/things/Image_Texture_001.outputs:rgb>
                 float inputs:ior = 1.5
-                float inputs:metallic.connect = </root/_materials/things/Image_Texture_002.outputs:r>
+                float inputs:metallic.connect = </root/_materials/things/Image_Texture_005.outputs:a>
                 normal3f inputs:normal.connect = </root/_materials/things/Image_Texture_004.outputs:rgb>
                 float inputs:opacity = 1
-                float inputs:roughness.connect = </root/_materials/things/Image_Texture_003.outputs:r>
+                float inputs:roughness.connect = </root/_materials/things/Image_Texture_002.outputs:a>
                 float inputs:specular = 0.5
                 token outputs:surface
             }
@@ -223,7 +228,7 @@ def Xform "root" (
             def Shader "Image_Texture"
             {
                 uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert2_baseColor.jpg@
+                asset inputs:file = @./textures/things_baseColor.jpg@
                 token inputs:sourceColorSpace = "sRGB"
                 float2 inputs:st.connect = </root/_materials/things/UV_Map.outputs:result>
                 token inputs:wrapS = "repeat"
@@ -238,35 +243,40 @@ def Xform "root" (
                 float2 outputs:result
             }
 
+            def Shader "Image_Texture_005"
+            {
+                uniform token info:id = "UsdUVTexture"
+                asset inputs:file = @./textures/things_metallicRoughness_metal.jpg@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </root/_materials/things/uvmap.outputs:result>
+                token inputs:wrapS = "repeat"
+                token inputs:wrapT = "repeat"
+                float outputs:a
+            }
+
+            def Shader "uvmap"
+            {
+                uniform token info:id = "UsdPrimvarReader_float2"
+                string inputs:varname = "st"
+                float2 outputs:result
+            }
+
             def Shader "Image_Texture_002"
             {
                 uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert2_metallicRoughness_metal.jpg@
-                token inputs:sourceColorSpace = "raw"
-                float2 inputs:st.connect = </root/_materials/things/UV_Map.outputs:result>
+                asset inputs:file = @./textures/things_metallicRoughness_rough.jpg@
+                token inputs:sourceColorSpace = "sRGB"
+                float2 inputs:st.connect = </root/_materials/things/uvmap.outputs:result>
                 token inputs:wrapS = "repeat"
                 token inputs:wrapT = "repeat"
-                float outputs:r
-            }
-
-            def Shader "Image_Texture_003"
-            {
-                uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert2_metallicRoughness_rough.jpg@
-                token inputs:sourceColorSpace = "raw"
-                float2 inputs:st.connect = </root/_materials/things/UV_Map.outputs:result>
-                token inputs:wrapS = "repeat"
-                token inputs:wrapT = "repeat"
-                float outputs:r
+                float outputs:a
             }
 
             def Shader "Image_Texture_004"
             {
                 uniform token info:id = "UsdUVTexture"
-                float4 inputs:bias = (-1, -1, -1, -1)
-                asset inputs:file = @./textures/lambert2_normal.jpg@
-                float4 inputs:scale = (2, 2, 2, 2)
-                token inputs:sourceColorSpace = "raw"
+                asset inputs:file = @./textures/things_normal.jpg@
+                token inputs:sourceColorSpace = "sRGB"
                 float2 inputs:st.connect = </root/_materials/things/UV_Map.outputs:result>
                 token inputs:wrapS = "repeat"
                 token inputs:wrapT = "repeat"
@@ -276,13 +286,33 @@ def Xform "root" (
             def Shader "Image_Texture_001"
             {
                 uniform token info:id = "UsdUVTexture"
-                asset inputs:file = @./textures/lambert2_emissive.jpg@
+                asset inputs:file = @./textures/things_emissive.jpg@
                 token inputs:sourceColorSpace = "sRGB"
                 float2 inputs:st.connect = </root/_materials/things/UV_Map.outputs:result>
                 token inputs:wrapS = "repeat"
                 token inputs:wrapT = "repeat"
                 float3 outputs:rgb
             }
+        }
+    }
+
+    def Xform "Point"
+    {
+        custom string userProperties:blender:object_name = "Point"
+        float3 xformOp:rotateXYZ = (0, 0, 0)
+        float3 xformOp:scale = (1, 1, 1)
+        double3 xformOp:translate = (0.14647971093654633, -0.618942379951477, 3.279341220855713)
+        uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
+
+        def RectLight "Point"
+        {
+            float3[] extent = [(-0.125, -0.125, -0), (0.125, 0.125, 0)]
+            bool inputs:enableColorTemperature = 1
+            float inputs:height = 0.25
+            float inputs:intensity = 63.7893
+            bool inputs:normalize = 1
+            float inputs:width = 0.25
+            custom string userProperties:blender:data_name = "Point"
         }
     }
 
