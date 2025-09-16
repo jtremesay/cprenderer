@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Optional
 
-import pygame
+import moderngl
 
 from .loader import load_scene_from_file
 
@@ -24,6 +24,7 @@ class CommandCli(BaseCommand):
 
     def add_arguments(self, parser: ArgumentParser) -> None:
         parser.add_argument(
+            "-s",
             "--scene",
             type=Path,
             default="assets/cube/scene.usdc",
@@ -31,6 +32,8 @@ class CommandCli(BaseCommand):
         )
 
     def run(self, args: Namespace) -> None:
+        ctx = moderngl.create_context(standalone=True)
+
         scene = load_scene_from_file(args.scene)
         print(scene)
 
@@ -41,6 +44,7 @@ class CommandGui(BaseCommand):
 
     def add_arguments(self, parser: ArgumentParser) -> None:
         parser.add_argument(
+            "-s",
             "--scene",
             type=Path,
             default="assets/cube/scene.usdc",
@@ -48,12 +52,15 @@ class CommandGui(BaseCommand):
         )
 
     def run(self, args: Namespace) -> None:
-        scene = load_scene_from_file(args.scene)
+        import pygame
 
         pygame.init()
         pygame.display.set_mode(
             (1280, 720), flags=pygame.OPENGL | pygame.DOUBLEBUF, vsync=True
         )
+
+        ctx = moderngl.get_context()
+        scene = load_scene_from_file(args.scene)
 
         while True:
             for event in pygame.event.get():
