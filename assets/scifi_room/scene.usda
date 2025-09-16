@@ -14,29 +14,29 @@ def Xform "root" (
     }
 )
 {
-    def Xform "Empty"
+    def Xform "camera_target"
     {
-        custom string userProperties:blender:object_name = "Empty"
+        custom string userProperties:blender:object_name = "camera_target"
         float3 xformOp:rotateXYZ = (0, -0, 81.01333)
         float3 xformOp:scale = (1, 1, 1)
         double3 xformOp:translate = (0, 0, 0.7699999809265137)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
-        def Xform "Camera"
+        def Xform "camera"
         {
-            custom string userProperties:blender:object_name = "Camera"
+            custom string userProperties:blender:object_name = "camera"
             float3 xformOp:rotateXYZ = (80.74533, -8.128707e-7, -141.16772)
             float3 xformOp:scale = (1.0000001, 1, 1)
             double3 xformOp:translate = (-4.864498138427734, 6.043239116668701, 1.2640933990478516)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
-            def Camera "Camera"
+            def Camera "camera"
             {
                 float2 clippingRange = (0.1, 100)
                 float focalLength = 0.29
                 float horizontalAperture = 0.36
                 token projection = "perspective"
-                custom string userProperties:blender:data_name = "Camera"
+                custom string userProperties:blender:data_name = "camera"
                 float verticalAperture = 0.2025
             }
         }
@@ -46,7 +46,7 @@ def Xform "root" (
     {
         custom string userProperties:blender:object_name = "scene"
         float3 xformOp:rotateXYZ = (-179.99998, -0, 0)
-        float3 xformOp:scale = (0.0001, 0.0001, 0.0001)
+        float3 xformOp:scale = (0.01, 0.01, 0.01)
         double3 xformOp:translate = (0, 0, 0)
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
@@ -54,7 +54,7 @@ def Xform "root" (
         {
             custom string userProperties:blender:object_name = "walls"
             float3 xformOp:rotateXYZ = (-89.99999, 0, 0)
-            float3 xformOp:scale = (100.000015, 100.00001, 100.00001)
+            float3 xformOp:scale = (1, 1, 1)
             double3 xformOp:translate = (0, 0, 0)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
@@ -84,7 +84,7 @@ def Xform "root" (
         {
             custom string userProperties:blender:object_name = "things"
             float3 xformOp:rotateXYZ = (-89.99999, 0, 0)
-            float3 xformOp:scale = (100.000015, 100.00001, 100.00001)
+            float3 xformOp:scale = (1, 1, 1)
             double3 xformOp:translate = (0, 0, 0)
             uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
