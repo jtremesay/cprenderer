@@ -12,3 +12,7 @@ wheels/
 
 # Blender
 *.blend1
+
+
+# Node.js
+node_modules/
