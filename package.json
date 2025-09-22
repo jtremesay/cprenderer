@@ -9,7 +9,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "path": "^0.12.7",
+    "sass": "^1.93.0",
     "typescript": "~5.8.3",
     "vite": "^7.1.7"
+  },
+  "dependencies": {
+    "@loaders.gl/gltf": "^4.3.4",
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.8"
   }
 }
