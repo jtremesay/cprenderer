@@ -78,7 +78,7 @@ class Renderer {
         this.program = load_program(this.gl, vs_src, fs_src);
     }
 
-    render(engine: Engine) {
+    render(_engine: Engine) {
         this.gl.clearColor(0.5, 0.5, 0.5, 1.0);
         this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     }
