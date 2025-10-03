@@ -1,8 +1,6 @@
 import { load } from '@loaders.gl/core';
 import { GLTFLoader } from '@loaders.gl/gltf';
 import type { GLTFWithBuffers } from '@loaders.gl/gltf';
-import vanilla_vert_shader_source from './shaders/vanilla.vert?raw';
-import vanilla_frag_shader_source from './shaders/vanilla.frag?raw';
 import main_vert_shader_source from './shaders/main.vert?raw';
 import main_frag_shader_source from './shaders/main.frag?raw';
 
@@ -74,9 +72,7 @@ class ProgramInfo {
     }
 }
 
-
-
-let container = document.querySelector(".vanilla-renderer")!;
+let container = document.querySelector(".main-renderer")!;
 let canvas = document.createElement("canvas");
 container.appendChild(canvas);
 canvas.width = 800;
@@ -86,7 +82,7 @@ if (!gl) {
     throw new Error("WebGL not supported");
 }
 
-let program = load_program(gl, vanilla_vert_shader_source, vanilla_frag_shader_source);
+let program = load_program(gl, main_vert_shader_source, main_frag_shader_source);
 let program_info = new ProgramInfo(gl, program, ["a_position"], ["u_time"]);
 console.log(program_info);
 
@@ -94,85 +90,3 @@ gl.clearColor(0.5, 0.5, 0.5, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
 console.log(gltf)
-
-
-/*
-class Renderer {
-    engine: Engine;
-    gl: WebGLRenderingContext;
-    program: WebGLProgram;
-
-    constructor(engine: Engine, vs_src: string, fs_src: string, container: Element) {
-        this.engine = engine;
-
-        const canvas = document.createElement("canvas");
-        container.appendChild(canvas);
-
-        const width = 800;
-        const height = width * 9 / 16
-        canvas.width = width;
-        canvas.height = height;
-        this.gl = canvas.getContext("webgl") as WebGLRenderingContext;
-        if (!this.gl) {
-            throw new Error("WebGL not supported");
-        }
-
-        this.program = load_program(this.gl, vs_src, fs_src);
-    }
-
-    render(_engine: Engine) {
-        this.gl.clearColor(0.5, 0.5, 0.5, 1.0);
-        this.gl.clear(this.gl.COLOR_BUFFER_BIT);
-    }
-}
-
-class MainRenderer extends Renderer {
-    constructor(engine: Engine, container: Element) {
-        super(engine, main_vert_shader_source, main_frag_shader_source, container);
-    }
-}
-
-class VanillaRenderer extends Renderer {
-    constructor(engine: Engine, container: Element) {
-        super(engine, vanilla_vert_shader_source, vanilla_frag_shader_source, container);
-    }
-}
-
-class Engine {
-    gltf: GLTFWithBuffers;
-    tick_count: number = 0;
-    wall_clock: number = 0;
-    renderers: Renderer[] = [];
-
-    constructor(gltf: GLTFWithBuffers) {
-        this.gltf = gltf;
-
-        for (let el of document.querySelectorAll(".main-renderer")) {
-            this.renderers.push(new MainRenderer(this, el));
-        }
-
-        for (let el of document.querySelectorAll(".vanilla-renderer")) {
-            this.renderers.push(new VanillaRenderer(this, el));
-        }
-    }
-
-    start() {
-        requestAnimationFrame(this.run.bind(this));
-    }
-
-    run() {
-        this.wall_clock += TARGET_DT;
-
-        //console.log(`Tick ${this.tick_count}`);
-        for (let renderer of this.renderers) {
-            renderer.render();
-        }
-
-        this.tick_count += 1;
-        requestAnimationFrame(this.run.bind(this));
-    }
-}
-
-let engine = new Engine(gltf);
-engine.start();
-*/
