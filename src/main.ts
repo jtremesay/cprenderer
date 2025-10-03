@@ -83,7 +83,7 @@ if (!gl) {
 }
 
 let program = load_program(gl, main_vert_shader_source, main_frag_shader_source);
-let program_info = new ProgramInfo(gl, program, ["a_position"], ["u_time"]);
+let program_info = new ProgramInfo(gl, program, ["a_position"], ["u_model_view", "u_projection_view"]);
 console.log(program_info);
 
 gl.clearColor(0.5, 0.5, 0.5, 1.0);
