@@ -56,13 +56,55 @@ function load_program(gl: WebGLRenderingContext, vs_src: string, fs_src: string)
     return program;
 }
 
+class ProgramInfo {
+    program: WebGLProgram
+    attrib_locations: { [key: string]: number } = {};
+    uniform_locations: { [key: string]: WebGLUniformLocation | null } = {};
+
+    constructor(gl: WebGLRenderingContext, program: WebGLProgram, attribs: string[], uniforms: string[]) {
+        this.program = program;
+
+        for (let attrib of attribs) {
+            this.attrib_locations[attrib] = gl.getAttribLocation(program, attrib);
+        }
+
+        for (let uniform of uniforms) {
+            this.uniform_locations[uniform] = gl.getUniformLocation(program, uniform);
+        }
+    }
+}
 
 
+
+let container = document.querySelector(".vanilla-renderer")!;
+let canvas = document.createElement("canvas");
+container.appendChild(canvas);
+canvas.width = 800;
+canvas.height = canvas.width * 9 / 16;
+let gl = canvas.getContext("webgl") as WebGLRenderingContext;
+if (!gl) {
+    throw new Error("WebGL not supported");
+}
+
+let program = load_program(gl, vanilla_vert_shader_source, vanilla_frag_shader_source);
+let program_info = new ProgramInfo(gl, program, ["a_position"], ["u_time"]);
+console.log(program_info);
+
+gl.clearColor(0.5, 0.5, 0.5, 1.0);
+gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+
+console.log(gltf)
+
+
+/*
 class Renderer {
+    engine: Engine;
     gl: WebGLRenderingContext;
     program: WebGLProgram;
 
-    constructor(vs_src: string, fs_src: string, container: Element) {
+    constructor(engine: Engine, vs_src: string, fs_src: string, container: Element) {
+        this.engine = engine;
+
         const canvas = document.createElement("canvas");
         container.appendChild(canvas);
 
@@ -85,14 +127,14 @@ class Renderer {
 }
 
 class MainRenderer extends Renderer {
-    constructor(container: Element) {
-        super(main_vert_shader_source, main_frag_shader_source, container);
+    constructor(engine: Engine, container: Element) {
+        super(engine, main_vert_shader_source, main_frag_shader_source, container);
     }
 }
 
 class VanillaRenderer extends Renderer {
-    constructor(container: Element) {
-        super(vanilla_vert_shader_source, vanilla_frag_shader_source, container);
+    constructor(engine: Engine, container: Element) {
+        super(engine, vanilla_vert_shader_source, vanilla_frag_shader_source, container);
     }
 }
 
@@ -106,11 +148,11 @@ class Engine {
         this.gltf = gltf;
 
         for (let el of document.querySelectorAll(".main-renderer")) {
-            this.renderers.push(new MainRenderer(el));
+            this.renderers.push(new MainRenderer(this, el));
         }
 
         for (let el of document.querySelectorAll(".vanilla-renderer")) {
-            this.renderers.push(new VanillaRenderer(el));
+            this.renderers.push(new VanillaRenderer(this, el));
         }
     }
 
@@ -123,7 +165,7 @@ class Engine {
 
         //console.log(`Tick ${this.tick_count}`);
         for (let renderer of this.renderers) {
-            renderer.render(this);
+            renderer.render();
         }
 
         this.tick_count += 1;
@@ -133,5 +175,4 @@ class Engine {
 
 let engine = new Engine(gltf);
 engine.start();
-
-console.log(gltf)
+*/
